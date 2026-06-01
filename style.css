@@ -1,0 +1,269 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+}
+
+body {
+    background-color: #0b0b0b; 
+    color: #E5E5EA;
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+}
+
+.app-container {
+    width: 100%;
+    max-width: 400px;
+    height: 680px;
+    background: #1C1C1E; 
+    border-radius: 35px;
+    padding: 24px 24px 20px 24px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* Área interna com rolagem independente para não quebrar as abas */
+.tab-content {
+    display: none;
+    height: calc(100% - 65px);
+    overflow-y: auto;
+    padding-bottom: 20px;
+}
+
+.tab-content::-webkit-scrollbar {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+header {
+    margin-bottom: 20px;
+}
+
+header .date {
+    font-size: 0.8rem;
+    color: #FF453A; 
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+header h1 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #FFFFFF;
+}
+
+.balance-card {
+    background: linear-gradient(135deg, #2C2C2E, #1C1C1E);
+    border: 1px solid #3A3A3C;
+    color: white;
+    padding: 20px;
+    border-radius: 24px;
+    margin-bottom: 25px;
+}
+
+.balance-card h2 {
+    font-size: 2rem;
+    margin: 5px 0 5px 0;
+    color: #FFFFFF;
+}
+
+.status-message {
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 6px 12px;
+    border-radius: 8px;
+    display: inline-block;
+    margin-bottom: 15px;
+}
+
+.status-positive {
+    background-color: rgba(48, 209, 88, 0.2);
+    color: #30D158; 
+}
+
+.status-negative {
+    background-color: rgba(255, 69, 58, 0.2);
+    color: #FF453A; 
+}
+
+.mini-cards {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    border-bottom: 1px solid #3A3A3C;
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+}
+
+.mini-card {
+    background: #2C2C2E;
+    padding: 10px;
+    border-radius: 12px;
+    width: 50%;
+}
+
+.mini-card span {
+    font-size: 0.75rem;
+    color: #AEAEB2;
+    display: block;
+}
+
+.text-success-card { color: #30D158 !important; }
+.text-danger-card { color: #FF453A !important; }
+
+.invest-summary-line {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+}
+
+.invest-summary-line span {
+    color: #AEAEB2;
+    display: block;
+    font-size: 0.75rem;
+}
+
+.chart-section {
+    background: #2C2C2E;
+    padding: 15px;
+    border-radius: 20px;
+    margin-bottom: 25px;
+}
+
+.chart-container {
+    position: relative;
+    width: 100%;
+    height: 160px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #AEAEB2;
+}
+
+input, select, button {
+    width: 100%;
+    padding: 12px;
+    border-radius: 12px;
+    border: 1px solid #3A3A3C;
+    background-color: #2C2C2E;
+    color: #FFFFFF;
+    font-size: 0.95rem;
+    outline: none;
+}
+
+input:focus, select:focus {
+    border-color: #FF453A;
+}
+
+button {
+    background-color: #FF453A;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    margin-top: 10px;
+    transition: 0.2s;
+}
+
+button:hover {
+    background-color: #E03B30;
+}
+
+h3 {
+    font-size: 1rem;
+    margin-bottom: 12px;
+    color: #FFFFFF;
+}
+
+ul { list-style: none; }
+
+li {
+    background: #2C2C2E;
+    padding: 12px;
+    border-radius: 12px;
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.9rem;
+}
+
+.li-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.li-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.btn-delete {
+    background: none;
+    border: none;
+    color: #FF453A;
+    font-size: 0.8rem;
+    cursor: pointer;
+    width: auto;
+    padding: 4px 8px;
+    margin: 0;
+    border-radius: 6px;
+}
+
+.btn-delete:hover {
+    background: rgba(255, 69, 58, 0.2);
+}
+
+.return-positive { color: #30D158; font-weight: 600; }
+.return-negative { color: #FF453A; font-weight: 600; }
+
+/* ================== FIXAÇÃO DA TAB BAR NO LUGAR CORRETO ================== */
+.tab-bar {
+    width: 100%;
+    height: 60px;
+    background: #1C1C1E;
+    border-top: 1px solid #2C2C2E;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: auto;
+    padding-top: 5px;
+}
+
+.tab-button {
+    background: none;
+    border: none;
+    width: auto;
+    margin: 0;
+    padding: 10px;
+    color: #8E8E93;
+    cursor: pointer;
+}
+
+.tab-button .tab-label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+}
+
+.tab-button.active {
+    color: #FF453A;
+}
