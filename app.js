@@ -1,52 +1,16 @@
-let transactions = [];
-let investments = [];
+let transactions = JSON.parse(localStorage.getItem('redfinance_transactions')) || [];
+let investments = JSON.parse(localStorage.getItem('redfinance_investments')) || [];
 
 let totalIncome = 0;
 let totalExpense = 0;
 let totalInvested = 0;
 let totalReturn = 0;
 
-// 1. Atualizado para conter as 10 novas categorias exclusivas de custos
 let categoryData = {
-    'Roupas': 0,
-    'Produtos de beleza': 0,
-    'Moradia': 0,
-    'Emergência': 0,
-    'Saúde': 0,
-    'Alimentação': 0,
-    'Entreterimento': 0,
-    'Assinaturas': 0,
-    'Parcelas da fatura': 0,
-    'Outros': 0
+    'Roupas': 0, 'Produtos de beleza': 0, 'Moradia': 0, 'Emergência': 0, 
+    'Saúde': 0, 'Alimentação': 0, 'Entreterimento': 0, 'Assinaturas': 0, 
+    'Parcelas da fatura': 0, 'Outros': 0
 };
-
-// FUNÇÃO INTELIGENTE QUE ALTERNA AS CATEGORIAS NA TELA
-function updateCategoryOptions() {
-    const type = document.getElementById('transaction-type').value;
-    const categorySelect = document.getElementById('category');
-    
-    // Limpa as opções antigas
-    categorySelect.innerHTML = ''; 
-
-    // Se for receita, coloca apenas Salário e Outros
-    if (type === 'Receita') {
-        const receitasOpcoes = ['Salário', 'Outros'];
-        receitasOpcoes.forEach(opt => {
-            categorySelect.innerHTML += `<option value="${opt}">${opt}</option>`;
-        });
-    } 
-    // Se for gasto, injeta as 10 categorias solicitadas
-    else {
-        const custosOpcoes = [
-            'Roupas', 'Produtos de beleza', 'Moradia', 'Emergência', 
-            'Saúde', 'Alimentação', 'Entreterimento', 'Assinaturas', 
-            'Parcelas da fatura', 'Outros'
-        ];
-        custosOpcoes.forEach(opt => {
-            categorySelect.innerHTML += `<option value="${opt}">${opt}</option>`;
-        });
-    }
-}
 
 // ALTERNAR ABAS
 function switchTab(tabId) {
@@ -60,7 +24,30 @@ function switchTab(tabId) {
     if (tabId === 'tab-invest') document.getElementById('btn-tab-invest').classList.add('active');
 }
 
-// CONFIGURAÇÃO DO GRÁFICO (Adaptado com cores gradientes para as 10 categorias)
+// ATUALIZAR CATEGORIAS DO FORMULÁRIO
+function updateCategoryOptions() {
+    const type = document.getElementById('transaction-type').value;
+    const categorySelect = document.getElementById('category');
+    categorySelect.innerHTML = ''; 
+
+    if (type === 'Receita') {
+        const receitasOpcoes = ['Salário', 'Outros'];
+        receitasOpcoes.forEach(opt => {
+            categorySelect.innerHTML += `<option value="${opt}">${opt}</option>`;
+        });
+    } else {
+        const custosOpcoes = [
+            'Roupas', 'Produtos de beleza', 'Moradia', 'Emergência', 
+            'Saúde', 'Alimentação', 'Entreterimento', 'Assinaturas', 
+            'Parcelas da fatura', 'Outros'
+        ];
+        custosOpcoes.forEach(opt => {
+            categorySelect.innerHTML += `<option value="${opt}">${opt}</option>`;
+        });
+    }
+}
+
+// CONFIGURAÇÃO DO GRÁFICO
 let ctx = document.getElementById('categoryChart').getContext('2d');
 let myChart = new Chart(ctx, {
     type: 'doughnut',
@@ -79,9 +66,7 @@ let myChart = new Chart(ctx, {
     options: {
         responsive: true,
         maintainAspectRatio: false,
-        plugins: {
-            legend: { display: false } // Ocultado legenda antiga por questões de espaço para 10 itens
-        }
+        plugins: { legend: { display: false } }
     }
 });
 
@@ -103,6 +88,9 @@ document.getElementById('btn-add').addEventListener('click', () => {
 
     document.getElementById('amount').value = '';
     descInput.value = '';
+    
+    // Salva permanentemente no navegador
+    localStorage.setItem('redfinance_transactions', JSON.stringify(transactions));
     
     updateAll();
     switchTab('tab-home');
@@ -127,6 +115,9 @@ document.getElementById('btn-add-invest').addEventListener('click', () => {
     document.getElementById('invest-amount').value = '';
     document.getElementById('invest-return').value = '';
 
+    // Salva permanentemente no navegador
+    localStorage.setItem('redfinance_investments', JSON.stringify(investments));
+
     updateAll();
     switchTab('tab-home');
 });
@@ -135,6 +126,8 @@ document.getElementById('btn-add-invest').addEventListener('click', () => {
 function deleteTransaction(id) {
     if (confirm("Tem certeza absoluta de que deseja deletar esta transação?")) {
         transactions = transactions.filter(t => t.id !== id);
+        // Atualiza o banco de dados local após deletar
+        localStorage.setItem('redfinance_transactions', JSON.stringify(transactions));
         updateAll();
     }
 }
@@ -143,6 +136,8 @@ function deleteTransaction(id) {
 function deleteInvestment(id) {
     if (confirm("Tem certeza absoluta de que deseja deletar este investimento?")) {
         investments = investments.filter(inv => inv.id !== id);
+        // Atualiza o banco de dados local após deletar
+        localStorage.setItem('redfinance_investments', JSON.stringify(investments));
         updateAll();
     }
 }
@@ -232,6 +227,5 @@ function updateAll() {
     myChart.update();
 }
 
-// Dispara a função uma vez no início para popular o select com o padrão inicial ("Gasto")
 updateCategoryOptions();
 updateAll();
